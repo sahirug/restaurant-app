@@ -1,0 +1,41 @@
+<!-- -->
+<ion-header>
+    <ion-navbar color="primary">
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>
+        <strong>Ionic 3</strong> Start Theme
+      </ion-title>
+      <ion-buttons end>
+        <!-- <button ion-button tappable (click)="presentNotifications($event)">
+          <ion-icon name="notifications"></ion-icon>
+        </button> -->
+        <button ion-button tappable>
+          <ion-icon name="funnel"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+
+  <ion-content class="animated fadeIn common-bg">
+
+    <ion-card *ngFor="let branch of branches" (click) = "gotoBranch()">
+      <img src="../assets/img/trip/thumb/trip_1.jpg"/>
+
+      <ion-card-title padding>
+        Nine Inch Nails Live
+      </ion-card-title>
+
+      <ion-item>
+        <span item-left>18 min</span>
+        <span item-left>(2.6 mi)</span>
+        <button ion-button icon-left clear item-end>
+          <ion-icon name="navigate"></ion-icon>
+          Start
+        </button>
+      </ion-item>
+
+    </ion-card>
+
+  </ion-content>
