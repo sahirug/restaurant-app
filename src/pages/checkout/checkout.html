@@ -5,7 +5,7 @@
         <ion-icon name="menu"></ion-icon>
       </button>
       <ion-title>
-        <strong>Ionic 3</strong> Start Theme
+        <strong>Confirm Items</strong>
       </ion-title>
       <ion-buttons end>
         <button ion-button tappable (click)="confirm()">
@@ -15,33 +15,40 @@
     </ion-navbar>
   </ion-header>
 
-  <ion-content class="animated fadeIn common-bg">
+  <ion-content padding>
 
-    <ion-list>
-      <ion-item>
-        <ion-icon name="leaf" item-start></ion-icon>
-          Herbology
-        <ion-icon name="rose" item-end></ion-icon>
-      </ion-item>
-      <ion-item>
-        <ion-icon name="leaf" item-start></ion-icon>
-          Herbology
-        <ion-icon name="rose" item-end></ion-icon>
-      </ion-item>
-      <ion-item>
-        <ion-icon name="leaf" item-start></ion-icon>
-          Herbology
-        <ion-icon name="rose" item-end></ion-icon>
-      </ion-item>
-    </ion-list>
+    <ion-grid style="width: 100%">
+      <ion-row justify-content-start>
+        <ion-col col-6>
+          <strong>Meal Name</strong>
+        </ion-col>
+        <ion-col col-2>
+          <strong>Qty</strong>
+        </ion-col>
+        <ion-col col-4>
+          <strong>Sub Total</strong>
+        </ion-col>
+      </ion-row>
+      <ion-row justify-content-start *ngFor="let meal of selectedMeals">
+        <ion-col col-6>
+          {{ meal.name }}
+        </ion-col>
+        <ion-col col-2>
+          {{ meal.qty }}
+        </ion-col>
+        <ion-col col-4>
+          {{ (meal.qty * meal.unit_price) }}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
   </ion-content>
 <ion-footer>
   <ion-toolbar>
     <ion-item>
       <ion-icon name="cash" item-start></ion-icon>
-      Total Amount
-      <ion-badge item-end color="danger">260k</ion-badge>
+      Grand Total
+      <ion-badge item-end color="danger">{{ grandTotal }}</ion-badge>
     </ion-item>
   </ion-toolbar>
 </ion-footer>

@@ -31,12 +31,24 @@ export class BranchesPage {
   }
 
   ionViewDidLoad() {
-    this.branches = this.branchProvider.getBranches();
+    this.getBranches();
     console.log('ionViewDidLoad BranchesPage');
   }
 
-  gotoBranch(){
-    this.navCtrl.push(BranchPage);
+  getBranches(){
+    this.branchProvider.getBranches()
+      .subscribe(data => {
+        this.branches = data;
+        console.log(this.branches);
+      }, err => {
+        console.log(err);
+      });
+  }
+
+  gotoBranch(branch){
+    this.navCtrl.push(BranchPage, {
+      branch: branch
+    });
   }
 
 }

@@ -21,16 +21,16 @@
   <ion-content>
 
     <ion-card>
-      <img src="../assets/img/trip/thumb/trip_1.jpg"/>
+      <img [src]="'http://localhost/' + branch.picture"/>
 
       <ion-card-title padding>
-        Nine Inch Nails Live
+        {{ branch.location }} Branch
       </ion-card-title>
 
       <ion-item>
         <span item-left>18 min</span>
         <span item-left>(2.6 mi)</span>
-        <button ion-button icon-left clear item-end (click)="gotoMenu()">
+        <button ion-button icon-left clear item-end (click)="gotoMenu(branch.branch_id)">
           <ion-icon name="bicycle"></ion-icon>
           Order
         </button>

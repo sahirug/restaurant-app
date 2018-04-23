@@ -10,6 +10,8 @@ import { RegisterPage } from '../pages/register/register';
 import { BranchesPage } from '../pages/branches/branches';
 import { DeliveriesPage } from '../pages/deliveries/deliveries';
 
+import { LogoutProvider } from '../providers/logout/logout';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -20,7 +22,13 @@ export class MyApp {
 
   pages: Array<{title: string, component: any, icon: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  public name: any = '';
+
+  constructor(
+    public platform: Platform,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    public logoutProvider: LogoutProvider) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -29,10 +37,10 @@ export class MyApp {
       { title: 'Branches', component: BranchesPage, icon: 'list' },
       { title: 'Deliveries', component: DeliveriesPage, icon: 'bicycle' }
     ];
-
   }
 
   logout(){
+    this.logoutProvider.logout();
     this.nav.setRoot(LoginPage);
   }
 

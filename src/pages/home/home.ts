@@ -1,6 +1,9 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, LoadingController } from 'ionic-angular';
+import { NavController, LoadingController, NavParams } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
+
+import { BranchProvider } from '../../providers/branch/branch';
+
 
 declare var google;
 
@@ -17,13 +20,33 @@ export class HomePage {
   directionsService = new google.maps.DirectionsService;
   directionsDisplay = new google.maps.DirectionsRenderer;
 
-  constructor(public navCtrl: NavController, public geolocation: Geolocation, private loadingController: LoadingController) {
+  public branches: any = [];
+
+  constructor(
+    public navCtrl: NavController,
+    public geolocation: Geolocation,
+    private loadingController: LoadingController,
+    private navParams: NavParams,
+    private branchProvider: BranchProvider) {
 
   }
 
   ionViewDidLoad(){
     this.initMap();
+    this.getBranches();
   }
+
+
+  getBranches(){
+    this.branchProvider.getBranches()
+      .subscribe(data => {
+        this.branches = data;
+        this.addBranchesToMap();
+      }, err => {
+        console.log(err);
+      });
+  }
+
 
   initMap() {
     let locationLoadingController = this.loadingController.create({
@@ -47,12 +70,25 @@ export class HomePage {
       let marker = new google.maps.Marker({
         map: this.map,
         animation: google.maps.Animation.DROP,
+        icon: '../assets/img/maps/pin2.png',
         position: this.map.getCenter()
       });
 
-      let content = '<h4>Information!</h4><p id="details">Contact number: +94777352562</p>'+
-      '<button id="tap" onclick="infoWindowTouched()">'+
-      'SIGN IN</button>';
+      //add branches to map
+      for(let branch of this.branches){
+        let lat = parseFloat(branch.lat);
+        let lng = parseFloat(branch.lng);
+        let marker = new google.maps.Marker({
+          map: this.map,
+          animation: google.maps.Animation.DROP,
+          position: {lat: lat, lng: lng}
+        });
+        let content = '<h4>Information '+ branch.branch_id +' !</h4><p id="details">Contact number: +94777352562</p>';
+
+        this.addInfoWindow(marker, content);
+      }
+
+      let content = '<h4>Information!</h4><p id="details">Contact number: +94777352562</p>';
 
 
       this.addInfoWindow(marker, content);
@@ -67,6 +103,10 @@ export class HomePage {
     // this.directionsDisplay.setMap(this.map);
   }
 
+  addBranchesToMap(){
+
+  }
+
   addInfoWindow(marker, content){
     let infoWindow = new google.maps.InfoWindow({
       content: content
@@ -76,7 +116,7 @@ export class HomePage {
       infoWindow.open(this.map, marker);
     });
 
-    infoWindow.setContent('<input type="button" value="View" onclick="joinFunction()"><input type="button" value="Join" onclick="alert(\"infoWindow\")">');
+    infoWindow.setContent(content);
 
     // google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
     //   document.getElementById('tap').addEventListener('click', () => {

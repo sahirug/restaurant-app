@@ -25,6 +25,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { BranchProvider } from '../providers/branch/branch';
 import { RegisterProvider } from '../providers/register/register';
 import { LoginProvider } from '../providers/login/login';
+import { LogoutProvider } from '../providers/logout/logout';
+import { UsernameProvider } from '../providers/username/username';
+import { MealProvider } from '../providers/meal/meal';
 
 @NgModule({
   declarations: [
@@ -65,7 +68,10 @@ import { LoginProvider } from '../providers/login/login';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     BranchProvider,
     RegisterProvider,
-    LoginProvider
+    LoginProvider,
+    LogoutProvider,
+    UsernameProvider,
+    MealProvider
   ]
 })
 export class AppModule {}

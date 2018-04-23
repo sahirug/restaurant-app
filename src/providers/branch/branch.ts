@@ -30,8 +30,13 @@ export class BranchProvider {
     console.log('Hello BranchProvider Provider');
   }
 
-  public getBranches(){
+  public getAllBranches(){
     return this.branches;
+  }
+
+  public getBranches(){
+    this.branches = [];
+    return this.http.get('http://localhost/restaurant/api/branches/get_branches.php');
   }
 
 }

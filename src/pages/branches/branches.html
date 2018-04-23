@@ -20,11 +20,12 @@
 
   <ion-content class="animated fadeIn common-bg">
 
-    <ion-card *ngFor="let branch of branches" (click) = "gotoBranch()">
-      <img src="../assets/img/trip/thumb/trip_1.jpg"/>
+    <ion-card *ngFor="let branch of branches" (click) = "gotoBranch(branch)">
+      <!-- <img src="../assets/img/trip/thumb/trip_1.jpg"/> -->
+      <img [src]="'http://localhost/' + branch.picture"/>
 
       <ion-card-title padding>
-        Nine Inch Nails Live
+        {{ branch.location }} Branch
       </ion-card-title>
 
       <ion-item>

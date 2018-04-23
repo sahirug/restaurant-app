@@ -47,8 +47,10 @@ export class LoginPage {
         .subscribe(data => {
           let reply: any = data;
           if(reply.error === undefined){
-            this.loginProvider.saveToStorage(reply.id, this.loginForm.value.email);
-            this.nav.setRoot(HomePage);
+            this.loginProvider.saveToStorage(reply.id, this.loginForm.value.email, reply.name);
+            this.nav.setRoot(HomePage, {
+              name: reply.name
+            });
           }else{
             let errorAlert = this.alertCtrl.create({
               title: 'Incorrect credentials',

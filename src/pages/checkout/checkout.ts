@@ -17,15 +17,26 @@ import { DeliveriesPage } from '../deliveries/deliveries';
 })
 export class CheckoutPage {
 
+  public selectedMeals: any = [];
+  public grandTotal: number = 0;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.selectedMeals = this.navParams.get('selectedMeals');
   }
 
   ionViewDidLoad() {
+    this.getGrandTotal();
     console.log('ionViewDidLoad CheckoutPage');
   }
 
   confirm(){
     this.navCtrl.setRoot(DeliveriesPage);
+  }
+
+  getGrandTotal(){
+    for(let meal of this.selectedMeals){
+      this.grandTotal = this.grandTotal + (meal.qty * meal.unit_price);
+    }
   }
 
 }

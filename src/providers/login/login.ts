@@ -20,9 +20,10 @@ export class LoginProvider {
     return this.http.post('http://localhost/restaurant/api/app_user/login.php', loginData);
   }
 
-  saveToStorage(id, email){
+  saveToStorage(id, email, name){
     this.storage.set('id', id);
     this.storage.set('email', email);
+    this.storage.set('name', name);
   }
 
 }
