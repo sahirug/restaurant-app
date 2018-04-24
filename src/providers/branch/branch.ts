@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { Storage } from '@ionic/storage';
+
 /*
   Generated class for the BranchProvider provider.
 
@@ -26,7 +28,7 @@ export class BranchProvider {
   ];
 
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, public storage: Storage) {
     console.log('Hello BranchProvider Provider');
   }
 

@@ -5,7 +5,7 @@
         <ion-icon name="menu"></ion-icon>
       </button>
       <ion-title>
-        <strong>Ionic 3</strong> Start Theme
+        <strong>My Orders</strong>
       </ion-title>
       <!-- <ion-buttons end>
         <button ion-button tappable (click)="confirm()">
@@ -18,11 +18,14 @@
   <ion-content class="animated fadeIn common-bg">
 
     <ion-list>
-      <ion-item>
-        <h2>Ref#: ORD-CMB-421</h2>
-        <h3>BranchID: CMB</h3>
-        <p>LKR:5000.00</p>
-        <ion-badge item-end color="secondary">en-route</ion-badge>
+      <ion-item *ngFor="let order of orders">
+        <h2>Ref#: {{order.order_id}}</h2>
+        <h3>BranchID: {{order.branch_id}}</h3>
+        <p>LKR: {{order.tot_cost}}</p>
+        <ion-badge item-end color="{{ order.rider === null ? 'danger' : 'secondary' }}">{{ order.rider === null ? 'preparing' : 'en-route' }}</ion-badge>
+      </ion-item>
+      <ion-item *ngIf="this.orders.length === 0">
+        <h2>You do not seem to have any orders right now</h2>
       </ion-item>
     </ion-list>
 

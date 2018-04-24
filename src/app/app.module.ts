@@ -28,6 +28,8 @@ import { LoginProvider } from '../providers/login/login';
 import { LogoutProvider } from '../providers/logout/logout';
 import { UsernameProvider } from '../providers/username/username';
 import { MealProvider } from '../providers/meal/meal';
+import { OrderProvider } from '../providers/order/order';
+import { TravelDetailsProvider } from '../providers/travel-details/travel-details';
 
 @NgModule({
   declarations: [
@@ -71,7 +73,9 @@ import { MealProvider } from '../providers/meal/meal';
     LoginProvider,
     LogoutProvider,
     UsernameProvider,
-    MealProvider
+    MealProvider,
+    OrderProvider,
+    TravelDetailsProvider
   ]
 })
 export class AppModule {}

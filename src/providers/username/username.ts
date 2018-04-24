@@ -20,4 +20,13 @@ export class UsernameProvider {
     return this.storage.get('name');
   }
 
+  getID(){
+    this.storage.get('id')
+      .then(data => {
+        return data;
+      }, err => {
+        console.log(err)
+      });
+  }
+
 }
