@@ -20,8 +20,8 @@
 
   <ion-content class="animated fadeIn common-bg">
 
-    <ion-card *ngFor="let travelDetail of travelDetails; let branchIndex = index" (click) = "gotoBranch(allBranches[branchIndex], travelDetail)">
-      <img [src]="'http://localhost/' + allBranches[branchIndex].picture"/>
+    <ion-card *ngFor="let travelDetail of travelDetails; let branchIndex = index">
+      <img [src]="'http://localhost/' + allBranches[branchIndex].picture" (click) = "gotoBranch(allBranches[branchIndex], travelDetail)"/>
 
       <ion-card-title padding>
         {{ allBranches[branchIndex].location }} Branch
@@ -30,7 +30,7 @@
       <ion-item>
         <span item-left><ion-badge item-end>{{ travelDetail.distance }}</ion-badge></span>
         <span item-left><ion-badge item-end>{{ travelDetail.duration }}</ion-badge></span>
-        <button ion-button icon-left clear item-end>
+        <button ion-button icon-left clear item-end (click)="openNavigationModal(allBranches[branchIndex])">
           <ion-icon name="navigate"></ion-icon>
           Start
         </button>

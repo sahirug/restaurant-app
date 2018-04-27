@@ -12,6 +12,7 @@ import { BranchPage } from '../pages/branch/branch';
 import { MenuPage } from '../pages/menu/menu';
 import { CheckoutPage } from '../pages/checkout/checkout';
 import { DeliveriesPage } from '../pages/deliveries/deliveries';
+import { NavigationModalPage } from '../pages/navigation-modal/navigation-modal';
 
 import { Geolocation } from '@ionic-native/geolocation';
 
@@ -42,7 +43,8 @@ import { TravelDetailsProvider } from '../providers/travel-details/travel-detail
     BranchPage,
     MenuPage,
     CheckoutPage,
-    DeliveriesPage
+    DeliveriesPage,
+    NavigationModalPage
   ],
   imports: [
     BrowserModule,
@@ -61,7 +63,8 @@ import { TravelDetailsProvider } from '../providers/travel-details/travel-detail
     BranchPage,
     MenuPage,
     CheckoutPage,
-    DeliveriesPage
+    DeliveriesPage,
+    NavigationModalPage
   ],
   providers: [
     StatusBar,

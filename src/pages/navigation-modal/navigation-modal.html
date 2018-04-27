@@ -1,0 +1,32 @@
+<ion-header>
+
+    <ion-navbar color="primary">
+      <ion-buttons end>
+        <button ion-button (click)="closeModal()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-title>
+        <strong>Navigate to Branch</strong>
+      </ion-title>
+    </ion-navbar>
+
+  </ion-header>
+
+  <ion-content>
+
+      <div #map id="map"></div>
+
+
+      <!-- <ion-card no-margin margin-bottom class="full-width">
+        <ion-item tappable (click)="choosePlace('from')" class="border-bottom">
+          <ion-icon name="search" color="primary" item-left></ion-icon>
+          <span>{{ search.name }}</span>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="md-calendar" color="primary" item-left></ion-icon>
+          <ion-datetime class="no-pl" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="search.date"></ion-datetime>
+        </ion-item>
+      </ion-card> -->
+
+    </ion-content>

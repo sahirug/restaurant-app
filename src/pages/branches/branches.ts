@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ModalController } from 'ionic-angular';
 
 import { Geolocation } from '@ionic-native/geolocation';
 
 import { BranchPage } from '../branch/branch';
+import { NavigationModalPage } from '../navigation-modal/navigation-modal';
 
 import { BranchProvider } from '../../providers/branch/branch';
 import { TravelDetailsProvider } from '../../providers/travel-details/travel-details';
@@ -36,7 +37,8 @@ export class BranchesPage {
     public branchProvider: BranchProvider,
     public travelProvider: TravelDetailsProvider,
     public loadingController: LoadingController,
-    public geolocation: Geolocation
+    public geolocation: Geolocation,
+    public modalCtrl: ModalController
   ){
   }
 
@@ -112,6 +114,11 @@ export class BranchesPage {
       }
       this.travelDetails.push(travelDetailsObject);
     }
+  }
+
+  openNavigationModal(branch){
+    let navModal = this.modalCtrl.create(NavigationModalPage, branch);
+    navModal.present();
   }
 
 }
