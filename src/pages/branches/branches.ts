@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+
+import { Geolocation } from '@ionic-native/geolocation';
 
 import { BranchPage } from '../branch/branch';
 
@@ -13,6 +15,9 @@ import { TravelDetailsProvider } from '../../providers/travel-details/travel-det
  * Ionic pages and navigation.
  */
 
+declare var google;
+var service = new google.maps.DistanceMatrixService();
+var self = this;
 @IonicPage()
 @Component({
   selector: 'page-branches',
@@ -20,16 +25,18 @@ import { TravelDetailsProvider } from '../../providers/travel-details/travel-det
 })
 export class BranchesPage {
 
-
-  public pet: string = "puppies"
   public branches: any = [];
   public allBranches: any = [];
+
+  public travelDetails: any = [];
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public branchProvider: BranchProvider,
-    public travelProvider: TravelDetailsProvider
+    public travelProvider: TravelDetailsProvider,
+    public loadingController: LoadingController,
+    public geolocation: Geolocation
   ){
   }
 
@@ -38,31 +45,72 @@ export class BranchesPage {
     console.log('ionViewDidLoad BranchesPage');
   }
 
+
+
   getBranches(){
+    this.travelDetails = [];
+    let loadingBranches = this.loadingController.create({
+      content: 'Loading branches'
+    });
+    loadingBranches.present();
     this.branchProvider.getBranches()
       .subscribe(data => {
         this.allBranches = data;
-        this.getBranchDistanceAndTime();
+        this.geolocation.getCurrentPosition().then((position) => {
+          this.getBranchDistanceAndTime(position);
+        });
+        loadingBranches.dismiss();
       }, err => {
         console.log(err);
       });
   }
 
-  gotoBranch(branch){
+  gotoBranch(branch, travelDetail){
     this.navCtrl.push(BranchPage, {
-      branch: branch
+      branch: branch,
+      travelDetail: travelDetail
     });
   }
 
-  getBranchDistanceAndTime(){
-    // console.log(this.allBranches);
+  async getBranchDistanceAndTime(position){
     for(let branch of this.allBranches){
-      this.travelProvider.getTravelDetails(branch)
-        .subscribe(data => {
-          console.log(data)
-        }, err => {
-          console.error(err);
-        });
+      await this.getTravelDetails(branch, position);
+    }
+  }
+
+  getTravelDetails(branch, position){
+    service.getDistanceMatrix(
+      {
+        origins: [new google.maps.LatLng(position.coords.latitude, position.coords.longitude)],
+        destinations: [new google.maps.LatLng(branch.lat, branch.lng)],
+        travelMode: 'DRIVING'
+      }, (response, status) => {
+        this.callback(response, status);
+      }
+    );
+  }
+
+  callback = (response, status) => {
+    let travelDetailsObject;
+    if (status == 'OK') {
+      var origins = response.originAddresses;
+      var destinations = response.destinationAddresses;
+
+      for (var i = 0; i < origins.length; i++) {
+        var results = response.rows[i].elements;
+        for (var j = 0; j < results.length; j++) {
+          var element = results[j];
+          var distance = element.distance.text;
+          var duration = element.duration.text;
+          var from = origins[i];
+          var to = destinations[j];
+          travelDetailsObject = {
+            distance: distance,
+            duration: duration
+          }
+        }
+      }
+      this.travelDetails.push(travelDetailsObject);
     }
   }
 

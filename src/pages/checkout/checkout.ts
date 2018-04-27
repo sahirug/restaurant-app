@@ -44,7 +44,9 @@ export class CheckoutPage {
     saveLoader.present();
     this.orderProvider.placeOrder(this.selectedMeals, this.grandTotal);
     saveLoader.dismiss();
-    this.navCtrl.setRoot(DeliveriesPage);
+    this.navCtrl.setRoot(DeliveriesPage, {
+      status: 1
+    });
   }
 
   getGrandTotal(){

@@ -28,8 +28,8 @@
       </ion-card-title>
 
       <ion-item>
-        <span item-left>18 min</span>
-        <span item-left>(2.6 mi)</span>
+        <span item-left><ion-badge item-end>{{ travelDetails.distance }}</ion-badge></span>
+        <span item-left><ion-badge item-end>{{ travelDetails.duration }}</ion-badge></span>
         <button ion-button icon-left clear item-end (click)="gotoMenu(branch.branch_id)">
           <ion-icon name="bicycle"></ion-icon>
           Order

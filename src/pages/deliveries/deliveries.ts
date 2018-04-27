@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 
 import { OrderProvider } from '../../providers/order/order';
 
@@ -17,12 +17,23 @@ import { OrderProvider } from '../../providers/order/order';
 })
 export class DeliveriesPage {
 
-  public orders: any = [];
+  public orders: any = {};
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public orderProvider: OrderProvider) {
+    public orderProvider: OrderProvider,
+    public loadingController: LoadingController,
+    public toastController: ToastController) {
+      let status = this.navParams.get('status');
+      console.log(status);
+      if(status !== undefined){
+        let confirmToast = this.toastController.create({
+          message: 'Order placed succesfully!',
+          duration: 3000
+        });
+        confirmToast.present();
+      }
   }
 
   ionViewDidLoad() {
@@ -31,14 +42,21 @@ export class DeliveriesPage {
   }
 
   getUnpaidOrders(){
+    let loadDeliveriesLoader = this.loadingController.create({
+      content: 'Loading orders'
+    });
+    loadDeliveriesLoader.present();
     this.orderProvider.getUnpaidOrders().then(data => {
       data.subscribe(data => {
-        console.log(data);
-        this.orders.push(data);
-        if(this.orders.message !== undefined){
-          console.log('dggd')
-          this.orders = [];
-        }
+        this.orders = data;
+        console.log(this.orders);
+        // if(this.orders.message !== undefined){
+        //   console.log('dggd')
+        //   this.orders = [];
+        // }
+        loadDeliveriesLoader.dismiss();
+      }, err => {
+        console.error(err);
       });
     });
   }

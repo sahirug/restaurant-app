@@ -20,9 +20,12 @@ import { MealProvider } from '../../providers/meal/meal';
 export class BranchPage {
 
   public branch: any;
+  public travelDetails: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public mealProvider: MealProvider) {
     this.branch = this.navParams.get('branch');
+    this.travelDetails = this.navParams.get('travelDetail');
+    console.log(this.travelDetails);
   }
 
   ionViewDidLoad() {

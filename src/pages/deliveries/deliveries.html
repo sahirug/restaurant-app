@@ -18,13 +18,13 @@
   <ion-content class="animated fadeIn common-bg">
 
     <ion-list>
-      <ion-item *ngFor="let order of orders">
-        <h2>Ref#: {{order.order_id}}</h2>
-        <h3>BranchID: {{order.branch_id}}</h3>
-        <p>LKR: {{order.tot_cost}}</p>
-        <ion-badge item-end color="{{ order.rider === null ? 'danger' : 'secondary' }}">{{ order.rider === null ? 'preparing' : 'en-route' }}</ion-badge>
+      <ion-item *ngIf="orders.message === undefined">
+        <h2>Ref#: {{orders.order_id}}</h2>
+        <h3>BranchID: {{orders.branch_id}}</h3>
+        <p>LKR: {{orders.tot_cost}}</p>
+        <ion-badge item-end color="{{ orders.rider === null ? 'danger' : 'default' }}">{{ orders.rider === null ? 'preparing' : 'en-route' }}</ion-badge>
       </ion-item>
-      <ion-item *ngIf="this.orders.length === 0">
+      <ion-item *ngIf="orders.message !== undefined">
         <h2>You do not seem to have any orders right now</h2>
       </ion-item>
     </ion-list>

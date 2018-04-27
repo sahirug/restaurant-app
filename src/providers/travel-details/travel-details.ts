@@ -9,23 +9,50 @@ import { Injectable } from '@angular/core';
 */
 
 declare var google;
-
+var service = new google.maps.DistanceMatrixService();
 @Injectable()
 export class TravelDetailsProvider {
+
+  private travelDetailsObject: any = {};
 
   constructor(public http: HttpClient) {
     console.log('Hello TravelDetailsProvider Provider');
   }
 
   getTravelDetails(branch){
-    return this.http.get('https://maps.googleapis.com/maps/api/distancematrix/json', {
-      params: {
-        units: 'metric',
-        origins: 6.870512 + ',' + 79.880469,
-        destinations: branch.lat + ',' + branch.lng,
-        key: 'AIzaSyB6WQ6j-UisGnHwOqo9y1-GsSB6hykXGdI'
+    service.getDistanceMatrix(
+      {
+        origins: [new google.maps.LatLng(6.870128,79.880340)],
+        destinations: [new google.maps.LatLng(branch.lat, branch.lng)],
+        travelMode: 'DRIVING'
+      }, this.callback);
+      // return this.travelDetailsObject;
+  }
+
+  callback(response, status) {
+    let travelDetailsObject;
+    if (status == 'OK') {
+      var origins = response.originAddresses;
+      var destinations = response.destinationAddresses;
+      // console.log(origins);
+      // console.log(destinations);
+
+      for (var i = 0; i < origins.length; i++) {
+        var results = response.rows[i].elements;
+        for (var j = 0; j < results.length; j++) {
+          var element = results[j];
+          var distance = element.distance.text;
+          var duration = element.duration.text;
+          var from = origins[i];
+          var to = destinations[j];
+          travelDetailsObject = {
+            distance: distance,
+            duration: duration
+          }
+        }
       }
-    });
+      console.log(travelDetailsObject);
+    }
   }
 
 }
