@@ -83,15 +83,10 @@ export class HomePage {
           animation: google.maps.Animation.DROP,
           position: {lat: lat, lng: lng}
         });
-        let content = '<h4>Information '+ branch.branch_id +' !</h4><p id="details">Contact number: +94777352562</p>';
+        let content = '<h4>'+ branch.location +' Branch</h4><p id="details">Contact number: +94777352562>sdg</button> </p>';
 
         this.addInfoWindow(marker, content);
       }
-
-      let content = '<h4>Information!</h4><p id="details">Contact number: +94777352562</p>';
-
-
-      this.addInfoWindow(marker, content);
 
       locationLoadingController.dismiss();
 

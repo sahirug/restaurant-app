@@ -12,6 +12,8 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class UsernameProvider {
 
+  public data: any;
+
   constructor(public http: HttpClient, public storage: Storage) {
     console.log('Hello UsernameProvider Provider');
   }
@@ -20,13 +22,8 @@ export class UsernameProvider {
     return this.storage.get('name');
   }
 
-  getID(){
-    this.storage.get('id')
-      .then(data => {
-        return data;
-      }, err => {
-        console.log(err)
-      });
+  getID(): Promise<void>{
+    return this.storage.get('name');
   }
 
 }

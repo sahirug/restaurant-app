@@ -25,7 +25,11 @@
         <ion-badge item-end color="{{ orders.rider === null ? 'danger' : 'default' }}">{{ orders.rider === null ? 'preparing' : 'en-route' }}</ion-badge>
       </ion-item>
       <ion-item *ngIf="orders.message !== undefined">
-        <h2>You do not seem to have any orders right now</h2>
+        <ion-row justify-content-center>
+          <ion-col col-6>
+            <ion-icon name="warning"></ion-icon> No orders to show
+          </ion-col>
+        </ion-row>
       </ion-item>
     </ion-list>
 

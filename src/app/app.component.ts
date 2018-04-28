@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -11,6 +11,7 @@ import { BranchesPage } from '../pages/branches/branches';
 import { DeliveriesPage } from '../pages/deliveries/deliveries';
 
 import { LogoutProvider } from '../providers/logout/logout';
+import { UsernameProvider } from '../providers/username/username';
 
 @Component({
   templateUrl: 'app.html'
@@ -28,7 +29,9 @@ export class MyApp {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    public logoutProvider: LogoutProvider) {
+    public logoutProvider: LogoutProvider,
+    public usernameProvider: UsernameProvider,
+    public events: Events) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -37,6 +40,15 @@ export class MyApp {
       { title: 'Branches', component: BranchesPage, icon: 'list' },
       { title: 'Deliveries', component: DeliveriesPage, icon: 'bicycle' }
     ];
+    this.events.subscribe('user:logged_in', (greeting) => {
+      this.name=greeting;
+    });
+  }
+
+  async getName(){
+    this.name = await this.usernameProvider.getID();
+    this.name = this.name == undefined ? 'User' : this.name;
+    console.log(this.name);
   }
 
   logout(){

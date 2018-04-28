@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {NavController, AlertController, ToastController, MenuController, LoadingController} from "ionic-angular";
+import {NavController, AlertController, ToastController, MenuController, LoadingController, Events} from "ionic-angular";
 import {HomePage} from "../home/home";
 import {RegisterPage} from "../register/register";
 
@@ -22,7 +22,8 @@ export class LoginPage {
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public formBuilder: FormBuilder,
-    public loginProvider: LoginProvider) {
+    public loginProvider: LoginProvider,
+    public events: Events) {
 
     this.menu.swipeEnable(false);
     this.loginForm = this.formBuilder.group({
@@ -47,6 +48,7 @@ export class LoginPage {
         .subscribe(data => {
           let reply: any = data;
           if(reply.error === undefined){
+            this.events.publish('user:logged_in', reply.name);
             this.loginProvider.saveToStorage(reply.id, this.loginForm.value.email, reply.name);
             this.nav.setRoot(HomePage, {
               name: reply.name
@@ -66,6 +68,7 @@ export class LoginPage {
           checkLoginLoader.dismiss();
         }, error => {
           console.log(error);
+          checkLoginLoader.dismiss();
         });
     }else{
       let informAlert = this.alertCtrl.create({

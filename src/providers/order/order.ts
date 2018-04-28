@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { Geolocation } from '@ionic-native/geolocation';
+
 import { Storage } from '@ionic/storage';
 import { isUndefined } from 'ionic-angular/util/util';
 
@@ -12,17 +14,21 @@ import { isUndefined } from 'ionic-angular/util/util';
 */
 @Injectable()
 export class OrderProvider {
-  constructor(public http: HttpClient, public storage: Storage) {
+  constructor(public http: HttpClient, public storage: Storage, public geolocation: Geolocation) {
     console.log('Hello OrderProvider Provider');
   }
 
   async placeOrder(selectedMeals, grandTotal){
 
     let userID = await this.getUserIDFromStorage();
+    let myPosition = await this.geolocation.getCurrentPosition();
+    console.log(myPosition);
     let finalOrder = {
       tot_cost: grandTotal,
       app_user_id: userID,
-      branch_id: selectedMeals[0].branch_id
+      branch_id: selectedMeals[0].branch_id,
+      lat: myPosition.coords.latitude,
+      lng: myPosition.coords.longitude
     }
     let postData = JSON.stringify(finalOrder);
     console.log(postData);
