@@ -8,6 +8,7 @@ import { NavigationModalPage } from '../navigation-modal/navigation-modal';
 
 import { BranchProvider } from '../../providers/branch/branch';
 import { TravelDetailsProvider } from '../../providers/travel-details/travel-details';
+import { OrderProvider } from '../../providers/order/order';
 
 /**
  * Generated class for the BranchesPage page.
@@ -38,7 +39,8 @@ export class BranchesPage {
     public travelProvider: TravelDetailsProvider,
     public loadingController: LoadingController,
     public geolocation: Geolocation,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public orderProvider: OrderProvider
   ){
   }
 
@@ -68,9 +70,19 @@ export class BranchesPage {
   }
 
   gotoBranch(branch, travelDetail){
-    this.navCtrl.push(BranchPage, {
-      branch: branch,
-      travelDetail: travelDetail
+    let hasOrder = true;
+    this.orderProvider.getUnpaidOrders().then(data => {
+      data.subscribe(data => {
+        let orderDetails: any = data;
+        hasOrder = orderDetails.message == undefined ? true : false;
+        this.navCtrl.push(BranchPage, {
+          branch: branch,
+          travelDetail: travelDetail,
+          hasOrder: hasOrder
+        });
+      }, err => {
+        console.log(err);
+      });
     });
   }
 

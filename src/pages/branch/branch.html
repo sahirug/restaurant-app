@@ -30,7 +30,7 @@
       <ion-item>
         <span item-left><ion-badge item-end>{{ travelDetails.distance }}</ion-badge></span>
         <span item-left><ion-badge item-end>{{ travelDetails.duration }}</ion-badge></span>
-        <button ion-button icon-left clear item-end (click)="gotoMenu(branch.branch_id)">
+        <button ion-button icon-left clear item-end (click)="gotoMenu(branch.branch_id)" [disabled] = "hasOrder" >
           <ion-icon name="bicycle"></ion-icon>
           Order
         </button>

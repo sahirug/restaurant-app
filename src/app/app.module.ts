@@ -6,6 +6,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { LoginPage } from '../pages/login/login';
+import { AnotherLoginPage } from '../pages/another-login/another-login';
 import { RegisterPage } from '../pages/register/register';
 import { BranchesPage } from '../pages/branches/branches';
 import { BranchPage } from '../pages/branch/branch';
@@ -17,6 +18,8 @@ import { NavigationModalPage } from '../pages/navigation-modal/navigation-modal'
 import { Geolocation } from '@ionic-native/geolocation';
 
 import { IonicStorageModule } from '@ionic/storage';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
@@ -38,6 +41,7 @@ import { TravelDetailsProvider } from '../providers/travel-details/travel-detail
     HomePage,
     ListPage,
     LoginPage,
+    AnotherLoginPage,
     RegisterPage,
     BranchesPage,
     BranchPage,
@@ -49,6 +53,7 @@ import { TravelDetailsProvider } from '../providers/travel-details/travel-detail
   imports: [
     BrowserModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
   ],
@@ -58,6 +63,7 @@ import { TravelDetailsProvider } from '../providers/travel-details/travel-detail
     HomePage,
     ListPage,
     LoginPage,
+    AnotherLoginPage,
     RegisterPage,
     BranchesPage,
     BranchPage,

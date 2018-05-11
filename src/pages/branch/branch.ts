@@ -21,11 +21,13 @@ export class BranchPage {
 
   public branch: any;
   public travelDetails: any;
+  public hasOrder: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public mealProvider: MealProvider) {
     this.branch = this.navParams.get('branch');
     this.travelDetails = this.navParams.get('travelDetail');
-    console.log(this.travelDetails);
+    this.hasOrder = this.navParams.get('hasOrder');
+    console.log(this.hasOrder);
   }
 
   ionViewDidLoad() {

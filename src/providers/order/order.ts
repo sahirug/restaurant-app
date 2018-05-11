@@ -45,6 +45,14 @@ export class OrderProvider {
       });
   }
 
+  storeOrderIntoStorage(val){
+    this.storage.set('has_orders', val);
+  }
+
+  userHasOrders(): Promise<void>{
+    return this.storage.get('has_orders');
+  }
+
   getUserIDFromStorage(): Promise<void>{
     return this.storage.get('id');
   }
