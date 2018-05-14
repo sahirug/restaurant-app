@@ -1,8 +1,11 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, LoadingController, NavParams } from 'ionic-angular';
+import { NavController, LoadingController, NavParams, ActionSheetController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 
+import { MenuPage } from '../menu/menu';
+
 import { BranchProvider } from '../../providers/branch/branch';
+import { MealProvider } from '../../providers/meal/meal';
 
 
 declare var google;
@@ -15,8 +18,8 @@ export class HomePage {
 
   @ViewChild('map') mapElement: ElementRef;
   map: any;
-  start = 'chicago, il';
-  end = 'chicago, il';
+  public destinationLat: any;
+  public destinationLng: any;
   directionsService = new google.maps.DirectionsService;
   directionsDisplay = new google.maps.DirectionsRenderer;
 
@@ -27,7 +30,9 @@ export class HomePage {
     public geolocation: Geolocation,
     private loadingController: LoadingController,
     private navParams: NavParams,
-    private branchProvider: BranchProvider) {
+    public actionSheetCtrl: ActionSheetController,
+    private branchProvider: BranchProvider,
+    private mealProvider: MealProvider) {
 
   }
 
@@ -41,7 +46,7 @@ export class HomePage {
     this.branchProvider.getBranches()
       .subscribe(data => {
         this.branches = data;
-        this.addBranchesToMap();
+        // this.addBranchesToMap();
       }, err => {
         console.log(err);
       });
@@ -74,18 +79,26 @@ export class HomePage {
         position: this.map.getCenter()
       });
 
+      this.directionsDisplay.setMap(this.map);
+
       //add branches to map
       for(let branch of this.branches){
         let lat = parseFloat(branch.lat);
         let lng = parseFloat(branch.lng);
+        let location = {
+          lat: lat,
+          lng: lng
+        };
         let marker = new google.maps.Marker({
           map: this.map,
+          icon: '../assets/img/maps/store.png',
           animation: google.maps.Animation.DROP,
-          position: {lat: lat, lng: lng}
+          position: location
         });
-        let content = '<h4>'+ branch.location +' Branch</h4><p id="details">Contact number: +94777352562>sdg</button> </p>';
 
-        this.addInfoWindow(marker, content);
+        marker.addListener('click', () => {
+          this.showActionSheet(branch, position, location);
+        });
       }
 
       locationLoadingController.dismiss();
@@ -93,42 +106,54 @@ export class HomePage {
     }, (err) => {
       console.log(err);
     });
-
-
-    // this.directionsDisplay.setMap(this.map);
   }
 
-  addBranchesToMap(){
-
-  }
-
-  addInfoWindow(marker, content){
-    let infoWindow = new google.maps.InfoWindow({
-      content: content
+  showActionSheet(branch, userPosition, destination){
+    let optionsSheet = this.actionSheetCtrl.create({
+      title: branch.location,
+      buttons: [
+        {
+          text: 'Navigate',
+          handler: () => {
+            this.destinationLat = parseFloat(destination.lat);
+            this.destinationLng = parseFloat(destination.lng);
+            this.calculateAndDisplayRoute(userPosition, destination);
+          }
+        },
+        {
+          text: 'Order',
+          handler: () => {
+            let meals: any = [];
+            let menuLoadingController = this.loadingController.create({
+              content: 'Loading Meals'
+            });
+            menuLoadingController.present();
+            this.mealProvider.getMeals(branch.branch_id)
+              .subscribe(data => {
+                meals = data;
+                menuLoadingController.dismiss();
+                this.navCtrl.setRoot(MenuPage, {
+                  meals: meals
+                });
+              }, err => {
+                menuLoadingController.dismiss();
+                console.log(err);
+              });;
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'destructive'
+        }
+      ]
     });
-
-    google.maps.event.addListener(marker, 'click', () => {
-      infoWindow.open(this.map, marker);
-    });
-
-    infoWindow.setContent(content);
-
-    // google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
-    //   document.getElementById('tap').addEventListener('click', () => {
-    //     //alert('Clicked');
-    //     this.infoWindowTouched();
-    //   });
-    // });
+    optionsSheet.present();
   }
 
-  joinFunction(){
-    alert("dgds");
-  }
-
-  calculateAndDisplayRoute() {
+  calculateAndDisplayRoute(position, destination) {
     this.directionsService.route({
-      origin: this.start,
-      destination: this.end,
+      origin: {lat: position.coords.latitude, lng: position.coords.longitude},
+      destination: {lat: this.destinationLat, lng: this.destinationLng},
       travelMode: 'DRIVING'
     }, (response, status) => {
       if (status === 'OK') {

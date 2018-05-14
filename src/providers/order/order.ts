@@ -5,6 +5,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 
 import { Storage } from '@ionic/storage';
 import { isUndefined } from 'ionic-angular/util/util';
+import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 
 /*
   Generated class for the OrderProvider provider.
@@ -73,7 +74,10 @@ export class OrderProvider {
   }
 
   async getUnpaidOrders(){
-    let userID = await this.getUserIDFromStorage();
+    let userID: any = await this.getUserIDFromStorage();
+    if(userID === null){
+      userID = 1;
+    }
     return this.http.get('http://localhost/restaurant/api/order/get_user_orders.php?id='+userID);
   }
 
